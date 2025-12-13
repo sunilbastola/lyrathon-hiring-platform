@@ -15,7 +15,6 @@ This is a platform for connecting job seekers and companies, that makes it strea
 * Django
 * MySQL
 
-
 ### Contributors:
 * Sabrin Luitel
 * Sunil Bastola
