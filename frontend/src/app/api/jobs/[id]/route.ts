@@ -18,3 +18,17 @@ export async function DELETE(req: Request) {
   jobs.splice(index, 1);
   return new Response("Deleted", { status: 200 });
 }
+
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const jobId = params.id;
+
+  // Example: fetch job from DB or mock data
+  const job = mockJobs.find((j) => j.id.toString() === jobId);
+
+  if (!job) return NextResponse.json({ error: "Job not found" }, { status: 404 });
+
+  return NextResponse.json(job);
+}
