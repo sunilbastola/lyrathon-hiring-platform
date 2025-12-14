@@ -39,9 +39,11 @@ export default function Home() {
                 For Companies
               </button>
             </Link>
-            <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-300">
-              For Job Seekers
-            </button>
+            <Link href="/jobs">
+              <button className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-300">
+                For Job Seekers
+              </button>
+            </Link>
           </div>
         </div>
       </section>

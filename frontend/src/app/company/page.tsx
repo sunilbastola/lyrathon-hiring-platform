@@ -2,23 +2,6 @@
 import React from 'react';
 import Link from 'next/link';
 
-// For implementing the Login with Email and Password
-// import React, { useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
-
-// const CompanyPage: React.FC = () => {
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     if (typeof window !== 'undefined' && localStorage.getItem('isLoggedIn') !== 'true') {
-//       router.push('/login');
-//     }
-//   }, [router]);
-
-//   // Rest of the component...
-// };
-
-
 const CompanyPage: React.FC = () => {
   // Mock data for applicant details (replace with actual data fetching)
   const applicants = [
@@ -30,8 +13,8 @@ const CompanyPage: React.FC = () => {
   return (
     <div className="bg-gray-100 p-8">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold mb-6 text-center">Company Dashboard - Applicant Details</h1>
-        <p className="mb-6 text-gray-600">Here you can view and manage applicant details for your hiring platform.</p>
+        <h1 className="text-3xl font-bold mb-6 text-center text-black">Company Dashboard - Applicant Details</h1>
+        <p className="mb-6 text-gray-900">Here you can view and manage applicant details for your hiring platform.</p>
 
         {/* Navigation Links */}
         <div className="mb-6 flex flex-wrap gap-4">
@@ -47,22 +30,22 @@ const CompanyPage: React.FC = () => {
           <table className="min-w-full bg-white border border-gray-300">
             <thead>
               <tr className="bg-gray-200">
-                <th className="py-2 px-4 border-b">ID</th>
-                <th className="py-2 px-4 border-b">Name</th>
-                <th className="py-2 px-4 border-b">Email</th>
-                <th className="py-2 px-4 border-b">Position</th>
-                <th className="py-2 px-4 border-b">Status</th>
-                <th className="py-2 px-4 border-b">Actions</th>
+                <th className="py-2 px-4 border-b text-black">ID</th>
+                <th className="py-2 px-4 border-b text-black">Name</th>
+                <th className="py-2 px-4 border-b text-black">Email</th>
+                <th className="py-2 px-4 border-b text-black">Position</th>
+                <th className="py-2 px-4 border-b text-black">Status</th>
+                <th className="py-2 px-4 border-b text-black">Actions</th>
               </tr>
             </thead>
             <tbody>
               {applicants.map((applicant) => (
                 <tr key={applicant.id} className="hover:bg-gray-50">
-                  <td className="py-2 px-4 border-b text-center">{applicant.id}</td>
-                  <td className="py-2 px-4 border-b">{applicant.name}</td>
-                  <td className="py-2 px-4 border-b">{applicant.email}</td>
-                  <td className="py-2 px-4 border-b">{applicant.position}</td>
-                  <td className="py-2 px-4 border-b">{applicant.status}</td>
+                  <td className="py-2 px-4 border-b text-center text-gray-900">{applicant.id}</td>
+                  <td className="py-2 px-4 border-b text-gray-900">{applicant.name}</td>
+                  <td className="py-2 px-4 border-b text-gray-900">{applicant.email}</td>
+                  <td className="py-2 px-4 border-b text-gray-900">{applicant.position}</td>
+                  <td className="py-2 px-4 border-b text-gray-900">{applicant.status}</td>
                   <td className="py-2 px-4 border-b text-center">
                     <Link href="/company/applicant-detail" className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 mr-2 inline-block">
                       View Details
@@ -78,7 +61,7 @@ const CompanyPage: React.FC = () => {
         </div>
 
         <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Add New Applicant</h2>
+          <h2 className="text-2xl font-bold mb-4 text-black">Add New Applicant</h2>
           <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -86,7 +69,7 @@ const CompanyPage: React.FC = () => {
                 type="text"
                 id="name"
                 name="name"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="text-gray-900 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-300"
                 placeholder="Enter applicant name"
               />
             </div>
@@ -96,7 +79,7 @@ const CompanyPage: React.FC = () => {
                 type="email"
                 id="email"
                 name="email"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="text-gray-900 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-300"
                 placeholder="Enter applicant email"
               />
             </div>
@@ -106,7 +89,7 @@ const CompanyPage: React.FC = () => {
                 type="text"
                 id="position"
                 name="position"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="text-gray-900 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-300"
                 placeholder="Enter position applied for"
               />
             </div>
@@ -115,7 +98,7 @@ const CompanyPage: React.FC = () => {
               <select
                 id="status"
                 name="status"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="text-gray-900 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               >
                 <option value="Applied">Applied</option>
                 <option value="Interviewed">Interviewed</option>

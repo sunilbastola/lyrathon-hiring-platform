@@ -11,6 +11,7 @@ type Job = {
   type: string;
   status: string;
   description: string;
+  assessmentDescription: string;
 };
 
 export default function CreateJob() {
@@ -23,7 +24,10 @@ export default function CreateJob() {
     type: "Full-time",
     status: "Open",
     description: "",
+    assessmentDescription: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,7 +38,7 @@ export default function CreateJob() {
   };
 
   const createJob = async () => {
-    if (!job.title || !job.company || !job.location || !job.salary || !job.description) {
+    if (!job.title || !job.company || !job.location || !job.salary || !job.description || !job.assessmentDescription) {
       alert("Please fill all required fields");
       return;
     }
@@ -45,14 +49,15 @@ export default function CreateJob() {
     }
 
     try {
-      const res = await fetch("/api/jobs", {
+      setLoading(true);
+      const res = await fetch("http://localhost:8000/api/jobs/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(job),
       });
 
       if (res.ok) {
-        alert("Job created!");
+        alert("Job created successfully!");
         setJob({
           title: "",
           company: "",
@@ -61,14 +66,18 @@ export default function CreateJob() {
           type: "Full-time",
           status: "Open",
           description: "",
+          assessmentDescription: "",
         });
         router.push('/company/job-view');
       } else {
-        alert("Error creating job");
+        const errorData = await res.json();
+        alert(`Error creating job: ${errorData.detail || "Please try again"}`);
       }
     } catch (error) {
       console.error(error);
-      alert("Network error");
+      alert("Network error - Make sure Django backend is running on http://localhost:8000");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,7 +180,7 @@ export default function CreateJob() {
             </select>
           </div>
           <div className="md:col-span-2">
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">Job Description</label>
             <textarea
               id="description"
               name="description"
@@ -184,11 +193,25 @@ export default function CreateJob() {
             />
           </div>
           <div className="md:col-span-2">
+            <label htmlFor="assessmentDescription" className="block text-sm font-medium text-gray-700">Assessment Description</label>
+            <textarea
+              id="assessmentDescription"
+              name="assessmentDescription"
+              rows={3}
+              value={job.assessmentDescription}
+              onChange={handleChange}
+              className="text-gray-900 mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 placeholder:text-gray-300"
+              placeholder="Describe the assessment/test that applicants need to complete..."
+              required
+            />
+          </div>
+          <div className="md:col-span-2">
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              disabled={loading}
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400"
             >
-              Create Job
+              {loading ? "Creating..." : "Create Job"}
             </button>
           </div>
         </form>
