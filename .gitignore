@@ -1,2 +1,11 @@
 node_modules/
 .next/
+__pycache__/
+venv/
+env/
+.venv/
+.Python
+build/
+dist/
+db.sqlite3
+*.sqlite3
