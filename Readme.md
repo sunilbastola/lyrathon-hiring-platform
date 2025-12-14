@@ -14,6 +14,7 @@ This is a platform for connecting job seekers and companies, that makes it strea
 * Next.js
 * Django
 * MySQL
+* Django rest framework
 
 ### Contributors:
 * Sabrin Luitel
