@@ -16,6 +16,7 @@ export default function JobViewPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [editingJobId, setEditingJobId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -29,19 +30,28 @@ export default function JobViewPage() {
     fetchJobs();
   }, []);
 
+  // If you are not running the Django backend, leave NEXT_PUBLIC_API_BASE_URL unset
+  // to skip remote fetching and avoid noisy network errors.
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:8000/api/jobs/");
-      if (res.ok) {
-        const data = await res.json();
-        setJobs(Array.isArray(data) ? data : []);
-      } else {
+      setError(null);
+      if (!apiBase) {
         setJobs([]);
+        setError("No API base configured. Set NEXT_PUBLIC_API_BASE_URL to your backend to load jobs.");
+        return;
       }
+
+      const res = await fetch(`${apiBase}/api/jobs/`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      const data = await res.json();
+      setJobs(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching jobs:", error);
       setJobs([]);
+      setError("Could not load jobs. Please ensure the backend is running and try again.");
     } finally {
       setLoading(false);
     }
@@ -66,7 +76,7 @@ export default function JobViewPage() {
 
   const saveEdit = async (id: number) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/jobs/${id}/`, {
+      const res = await fetch(`${apiBase}/api/jobs/${id}/`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -102,7 +112,7 @@ export default function JobViewPage() {
     if (!confirm("Are you sure you want to delete this job?")) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/jobs/${id}/`, {
+      const res = await fetch(`${apiBase}/api/jobs/${id}/`, {
         method: "DELETE",
       });
 
@@ -134,11 +144,18 @@ export default function JobViewPage() {
           </a>
           <button
             onClick={fetchJobs}
-            className="bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700"
+            disabled={loading}
+            className={`bg-gray-600 text-white py-2 px-4 rounded hover:bg-gray-700 ${loading ? "opacity-60 cursor-not-allowed" : ""}`}
           >
-            Refresh Jobs
+            {loading ? "Loading..." : "Refresh Jobs"}
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 rounded border border-red-300 bg-red-50 p-3 text-red-700">
+            {error}
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-8">
